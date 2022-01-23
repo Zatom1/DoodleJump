@@ -1,4 +1,3 @@
-
 const screenWidth = 450;
 const screenHeight = 600;
 
@@ -11,7 +10,6 @@ let scroll = 0;
 
 let gameScreen = 1;
 
-
 new p5();
 
 let pathetic;
@@ -23,7 +21,6 @@ function setup() {
   pathetic = loadImage("DoodleJump-Default-Solid(trans).png");
   breakablePlat = loadImage("DoodleJump-Default-Breakable(trans).png");
   basePlatform = loadImage("DoodleJump-Base-Solid(trans).png");
-
   frameRate(500);
 }
 
@@ -187,7 +184,6 @@ class box {
   }
 }
 
-
 let box1 = new box(50, 550, 5, 40, 40, 0.2);
 
 class platform {
@@ -271,7 +267,7 @@ class platform {
     }
   }
 }
-{
+
 let platform1 = new platform(
   random(20, screenWidth - 70),
   random(10, screenHeight / 5) + scroll,
@@ -328,7 +324,7 @@ let platform7 = new platform(
   true,
   false
 );
-}
+
 let base = new platform(25, screenHeight - 50 + scroll, 400, 40, false, true);
 
 function draw() {
