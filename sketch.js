@@ -32,7 +32,6 @@ function invert(n, limit) {
   return diff;
 }
 
- 
 class box {
   constructor(x, y, mass, width, height, bounce) {
     this.x = x;
