@@ -55,6 +55,7 @@ class box {
   appYForce(Yforce) {
     this.Yvelo += Yforce;
     this.y += this.Yvelo;
+    scroll-=Yforce;
   }
   appXDrag(d1) {
     if (this.Xvelo > d1) {
