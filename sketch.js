@@ -1,3 +1,5 @@
+const { default: Constants } = require("./Constants");
+
 const screenWidth = 450;
 const screenHeight = 600;
 
@@ -15,6 +17,11 @@ new p5();
 let pathetic;
 let breakablePlat;
 let basePlatform;
+
+let jumpTimer = 0;
+let jumpPossible = false;
+
+import platWidth from './Constants.js';
 
 function setup() {
   createCanvas(screenWidth, screenHeight);
@@ -55,7 +62,6 @@ class box {
   appYForce(Yforce) {
     this.Yvelo += Yforce;
     this.y += this.Yvelo;
-    scroll-=Yforce;
   }
   appXDrag(d1) {
     if (this.Xvelo > d1) {
@@ -136,6 +142,7 @@ class box {
     rect(this.x, this.y, this.width, this.height);
   }
   moveBox(mouseX, mouseY) {
+    /*
     if(this.y<1){this.Yvelo+=abs(this.Yvelo)/1.5;}
     if(this.y<25){scroll += 1.5;this.Yvelo+=2;}
     if(this.y<50){scroll += 1.5;this.Yvelo++;}
@@ -147,7 +154,9 @@ class box {
     if (this.y < 350) {
       scroll += 1;
     } //EWGHSDFIGNEISRDOREMDSBNVODLSNFVOESDMFBODLFNGXMBOVJLDMFBVIORNEDFVONRMFDOVERDFBJMVOFDNBMODSFMODNFSMOODSGMGOMDSO
-    if (keyIsPressed && keyCode === 32 && this.onGround === true) {
+    */
+   if(this.y<300){scroll+=gravity}
+    if (keyIsPressed && keyCode === 32 && this.onGround === true&&jumpPossible === true) {
       this.appYForce(-20);
     }
     if (aIsDown === true && this.Xvelo > -10) {
@@ -220,6 +229,7 @@ class platform {
         image(pathetic, this.x - 5, this.y + scroll - 5);
       } else if (this.breakable == true) {
         image(breakablePlat, this.x - 5, this.y + scroll - 5);
+        line(this.x+(this.width/2), this.y+ scroll, this.x+(this.width/2), this.y+scroll+this.height)
       } else if (this.base == true) {
         image(basePlatform, this.x - 5, this.y + scroll - 5);
       }
@@ -231,17 +241,17 @@ class platform {
       box1.x + box1.width > this.x &&
       box1.x < this.x + this.width &&
       box1.y + box1.height >= this.y + scroll &&
-      box1.y < this.y + scroll + this.height &&
-      this.broken === false
+      box1.y +box1.height< this.y + scroll + this.height &&
+      this.broken === false &&
+      box1.Yvelo>0
     ) {
-      box1.appYForce(-1);
       box1.Yvelo = 0;
       box1.onGround = true;
       //box1.Yvelo -=10;
 
       if (
-        box1.y + box1.height > this.y + scroll &&
-        box1.y < this.y + scroll + this.height
+        box1.y + box1.height > this.y + scroll + 1&&
+        box1.y +box1.height< this.y + scroll + this.height
       ) {
         box1.y -= 2;
       }
@@ -249,8 +259,8 @@ class platform {
     if (
       box1.x + box1.width > this.x &&
       box1.x < this.x + this.width &&
-      box1.y + box1.height >= this.y + scroll - 15 &&
-      box1.y < this.y + scroll + this.height &&
+      box1.y + box1.height >= this.y + scroll - 1 &&
+      box1.y +box1.height< this.y + scroll + this.height &&
       this.broken === false
     ) {
       this.carrying = true;
@@ -272,15 +282,15 @@ class platform {
 }
 
 let platform1 = new platform(
-  random(20, screenWidth - 70),
+  random(20, screenWidth/8),
   random(10, screenHeight / 5) + scroll,
-  80,
+  platWidth,
   10,
   true,
   false
 );
 let platform2 = new platform(
-  random(20, screenWidth - 70),
+  random(screenWidth/8, screenWidth/7),
   random(screenHeight / 5, (screenHeight / 5) * 2) + scroll,
   80,
   10,
@@ -288,7 +298,7 @@ let platform2 = new platform(
   false
 );
 let platform3 = new platform(
-  random(20, screenWidth - 70),
+  random(screenWidth/7, screenWidth/6),
   random((screenHeight / 5) * 2, (screenHeight / 5) * 3) + scroll,
   80,
   10,
@@ -296,7 +306,7 @@ let platform3 = new platform(
   false
 );
 let platform4 = new platform(
-  random(20, screenWidth - 70),
+  random(screenWidth/6, screenWidth/5),
   random((screenHeight / 5) * 3, (screenHeight / 5) * 4) + scroll,
   80,
   10,
@@ -304,7 +314,7 @@ let platform4 = new platform(
   false
 );
 let platform5 = new platform(
-  random(20, screenWidth - 70),
+  random(screenWidth/5, screenWidth/4),
   random((screenHeight / 5) * 4, (screenHeight / 5) * 5) + scroll,
   80,
   10,
@@ -312,7 +322,7 @@ let platform5 = new platform(
   false
 );
 let platform6 = new platform(
-  random(20, screenWidth - 70),
+  random(screenWidth/4, screenWidth/3),
   random((screenHeight / 5) * 2, (screenHeight / 5) * 3) + scroll,
   80,
   10,
@@ -320,7 +330,7 @@ let platform6 = new platform(
   false
 );
 let platform7 = new platform(
-  random(20, screenWidth - 70),
+  random(screenWidth/3, screenWidth/2),
   random((screenHeight / 5) * 3, (screenHeight / 5) * 4) + scroll,
   80,
   10,
@@ -328,7 +338,7 @@ let platform7 = new platform(
   false
 );
 let platform8 = new platform(
-  random(20, screenWidth - 70),
+  random(screenWidth/2, screenWidth/1),
   random((screenHeight / 5) * 3, (screenHeight / 5) * 4) + scroll,
   80,
   10,
@@ -348,6 +358,10 @@ let base = new platform(25, screenHeight - 50 + scroll, 400, 40, false, true);
 
 function draw() {
   background(240, 186, 70);
+
+  jumpTimer++;
+  if(jumpTimer%5 === 0){jumpPossible = true;}
+  else if(jumpPossible === true && keyCode==32&&keyIsPressed){jumpPossible = false}
 
   if (gameScreen === 0) {
     textSize(50);
@@ -374,9 +388,9 @@ function draw() {
   }
   //scroll+=0.0001;
   text(box1.Xvelo, 20, 20);
-  text(platform2.carryTime, 20, 40);
-  text(platform3.carryTime, 20, 60);
-  text(platform4.carryTime, 20, 80);
+  text(jumpPossible, 20, 40);
+  text(jumpTimer, 20, 60);
+  text(jumpTimer%10, 20, 80);
   text(platform5.carryTime, 20, 100);
   text(platform6.carryTime, 20, 120);
 }
