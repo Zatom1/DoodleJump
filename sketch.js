@@ -213,6 +213,7 @@ class platform {
 
   show() {
     if (this.broken === false) {
+      rect(this.x, this.y, this.width, this.height)
       if (this.breakable == false && this.base == false) {
         image(pathetic, this.x - 5, this.y + scroll - 5);
       } else if (this.breakable == true) {
