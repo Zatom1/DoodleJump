@@ -135,13 +135,14 @@ class box {
     rect(this.x, this.y, this.width, this.height);
   }
   moveBox(mouseX, mouseY) {
-    if(this.y<25){scroll += 2;}
-    if(this.y<50){scroll += 2;}
-    if(this.y<75){scroll += 2;}
-    if(this.y<100){scroll += 2;}
-    if(this.y<100){scroll += 2;}
-    if(this.y<200){scroll += 2}
-    if(this.y<300){scroll +=2}
+    if(this.y<1){this.Yvelo+=abs(this.Yvelo)/1.5;}
+    if(this.y<25){scroll += 1.5;this.Yvelo+=2;}
+    if(this.y<50){scroll += 1.5;this.Yvelo++;}
+    if(this.y<75){scroll += 1.5;this.Yvelo+=0.5;}
+    if(this.y<100){scroll += 1;}
+    if(this.y<100){scroll += 1;}
+    if(this.y<200){scroll += 1;}
+    if(this.y<300){scroll +=1;}
     if (this.y < 350) {
       scroll += 1;
     } //EWGHSDFIGNEISRDOREMDSBNVODLSNFVOESDMFBODLFNGXMBOVJLDMFBVIORNEDFVONRMFDOVERDFBJMVOFDNBMODSFMODNFSMOODSGMGOMDSO
@@ -216,7 +217,7 @@ class platform {
       if (this.breakable == false && this.base == false) {
         image(pathetic, this.x - 5, this.y + scroll - 5);
       } else if (this.breakable == true) {
-        image(trans, this.x - 5, this.y + scroll - 5);
+        image(breakablePlat, this.x - 5, this.y + scroll - 5);
       } else if (this.base == true) {
         image(basePlatform, this.x - 5, this.y + scroll - 5);
       }
@@ -324,6 +325,22 @@ let platform7 = new platform(
   true,
   false
 );
+let platform8 = new platform(
+  random(20, screenWidth - 70),
+  random((screenHeight / 5) * 3, (screenHeight / 5) * 4) + scroll,
+  80,
+  10,
+  false,
+  false
+);
+let platform9 = new platform(
+  random(20, screenWidth - 70),
+  random((screenHeight / 5) * 4, (screenHeight / 5) * 5) + scroll,
+  80,
+  10,
+  true,
+  false
+);
 
 let base = new platform(25, screenHeight - 50 + scroll, 400, 40, false, true);
 
@@ -343,6 +360,8 @@ function draw() {
     platform3.simulate();
     platform4.simulate();
     platform5.simulate();
+    platform8.simulate();
+    platform9.simulate();
     base.show();
     base.hitbox();
 
