@@ -1,4 +1,4 @@
-const { default: Constants } = require("./Constants");
+//const { default: Constants } = require("./Constants");
 
 const screenWidth = 450;
 const screenHeight = 600;
@@ -21,7 +21,7 @@ let basePlatform;
 let jumpTimer = 0;
 let jumpPossible = false;
 
-import platWidth from './Constants.js';
+//import platWidth from './Constants.js';
 
 function setup() {
   createCanvas(screenWidth, screenHeight);
@@ -284,7 +284,7 @@ class platform {
 let platform1 = new platform(
   random(20, screenWidth/8),
   random(10, screenHeight / 5) + scroll,
-  platWidth,
+  80,
   10,
   true,
   false
